@@ -25,6 +25,19 @@
           <span class="logo-sub">安心・丁寧な自宅査定</span>
         </a>
       </div>
+
+      <!-- PC用のメニュー（横並び） -->
+      <nav class="pc-nav" aria-label="PC用ナビゲーション">
+        <ul>
+          <li><a href="#problems">お悩み</a></li>
+          <li><a href="#services">サービス特徴</a></li>
+          <li><a href="#reasons">選ばれる理由</a></li>
+          <li><a href="#items">品目一覧</a></li>
+          <li><a href="#cases">買取事例</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ul>
+      </nav>
+
       <div class="header-info-group">
         <div class="header-phone-box">
           <span class="phone-label">お電話でのご相談はこちら（通話料無料）</span>
@@ -35,7 +48,32 @@
           <span class="btn-text">ネットで無料査定</span>
         </a>
       </div>
+
+      <!-- スマホ用ハンバーガーボタン（三本線＋メニューという文字でわかりやすく） -->
+      <button class="menu-btn" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-navigation">
+        <span class="menu-btn-icon" aria-hidden="true"></span>
+        <span class="menu-btn-text">メニュー</span>
+      </button>
     </div>
+
+    <!-- スマホ用スライドインナビゲーション -->
+    <nav id="mobile-navigation" class="mobile-nav" aria-hidden="true">
+      <ul>
+        <li><a href="#problems">お客様のお悩み</a></li>
+        <li><a href="#services">サービス特徴</a></li>
+        <li><a href="#reasons">選ばれる理由</a></li>
+        <li><a href="#items">買取品目一覧</a></li>
+        <li><a href="#cases">最近の買取事例</a></li>
+        <li><a href="#flow">ご利用の流れ</a></li>
+        <li><a href="#faq">よくある質問</a></li>
+        <li><a href="#contact" class="mobile-nav-cta">ネットで無料査定を申し込む</a></li>
+        <li class="mobile-nav-phone">
+          <span class="phone-label">お電話でのご相談（通話料無料）</span>
+          <a href="tel:0120-000-000">📞 0120-000-000</a>
+          <span class="phone-hours">受付時間 9:00〜18:00（年中無休）</span>
+        </li>
+      </ul>
+    </nav>
   </header>
 
   <main>
@@ -45,13 +83,14 @@
         <div class="hero-content">
           <span class="hero-badge">出張費・査定料 ぜんぶ無料！</span>
           <h1 class="hero-title">
-            しまっておいた大切な品物、<br>
+            しまっておいた大切な品物、<br class="pc-only">
             <span class="highlight">ご自宅にいながら</span><br>
             その場で丁寧・スッキリ買取
           </h1>
           <p class="hero-lead">
-            「重くて運べない」「価値があるか分からない」<br>
-            そんなお悩み、すべて私たちにお任せください。シニア・女性のお客様にも多く選ばれています。
+            「重くて運べない」「価値があるか分からない」<br class="pc-only">
+            そんなお悩み、すべて私たちにお任せください。<br>
+            シニア・女性のお客様にも多く選ばれています。
           </p>
           <div class="hero-cta-group">
             <a href="#contact" class="btn btn-hero-cta">
@@ -378,6 +417,7 @@
           <details class="faq-item">
             <summary class="faq-question">
               <span class="faq-q-icon">Q</span>
+              <span class="faq-question-text">その場でキャンセルできますか？</span>
               <span class="faq-toggle-icon">＋</span>
             </summary>
             <div class="faq-answer">

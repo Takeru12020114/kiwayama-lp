@@ -176,7 +176,7 @@ button, input, select, textarea {
 }
 
 /* --------------------------------------------------------------------------
-   4. ヘッダー
+   4. ヘッダー & ナビゲーション
    -------------------------------------------------------------------------- */
 .site-header {
   background-color: var(--color-white);
@@ -215,6 +215,11 @@ button, input, select, textarea {
   letter-spacing: 0.05em;
 }
 
+/* PC用メニュー（初期状態はスマホ非表示） */
+.pc-nav {
+  display: none;
+}
+
 /* 電話番号やボタンのグループ */
 .header-info-group {
   display: flex;
@@ -228,6 +233,165 @@ button, input, select, textarea {
   display: none;
 }
 
+/* スマホ用ハンバーガーボタン */
+.menu-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 110; /* モバイルナビの上に配置 */
+  width: 60px;
+  height: 60px;
+}
+
+.menu-btn-icon {
+  position: relative;
+  width: 28px;
+  height: 3px;
+  background-color: var(--color-brown-dark);
+  border-radius: 3px;
+  transition: var(--transition-base);
+}
+
+.menu-btn-icon::before,
+.menu-btn-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 28px;
+  height: 3px;
+  background-color: var(--color-brown-dark);
+  border-radius: 3px;
+  transition: var(--transition-base);
+}
+
+.menu-btn-icon::before {
+  top: -8px;
+}
+
+.menu-btn-icon::after {
+  top: 8px;
+}
+
+.menu-btn-text {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  margin-top: 6px;
+}
+
+/* メニュー展開時のボタンアニメーション (Xマーク化) */
+.menu-btn.active .menu-btn-icon {
+  background-color: transparent;
+}
+
+.menu-btn.active .menu-btn-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.menu-btn.active .menu-btn-icon::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+/* スマホ用スライドインナビゲーション */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: -100%; /* 画面の右外側へ退避 */
+  width: 100%;
+  height: 100vh;
+  background-color: var(--color-cream);
+  z-index: 105;
+  padding: 90px 8% 40px; /* ヘッダーと被らないよう上部余白 */
+  overflow-y: auto;
+  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -5px 0 25px rgba(90, 70, 50, 0.15);
+}
+
+.mobile-nav.active {
+  right: 0; /* 画面内にスライドイン */
+}
+
+.mobile-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.mobile-nav li {
+  border-bottom: 1px solid rgba(90, 70, 50, 0.08);
+}
+
+.mobile-nav a {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  padding: 12px 5px;
+}
+
+.mobile-nav a:active {
+  color: var(--color-gold-hover);
+}
+
+/* モバイルメニュー内のお問い合わせ誘導ボタン */
+.mobile-nav-cta {
+  background-color: var(--color-gold);
+  color: var(--color-white) !important;
+  text-align: center;
+  border-radius: 50px;
+  margin-top: 15px;
+  padding: 14px 20px !important;
+  box-shadow: 0 4px 12px rgba(214, 168, 79, 0.3);
+}
+
+/* モバイルメニュー内の電話相談エリア */
+.mobile-nav-phone {
+  border-bottom: none !important;
+  margin-top: 20px;
+  background-color: var(--color-white);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  border: 1px solid rgba(214, 168, 79, 0.2);
+}
+
+.mobile-nav-phone .phone-label {
+  font-size: 0.75rem;
+  color: var(--color-brown-base);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.mobile-nav-phone a {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  padding: 0;
+}
+
+.mobile-nav-phone .phone-hours {
+  font-size: 0.7rem;
+  color: var(--color-brown-base);
+  display: block;
+  margin-top: 5px;
+}
+
+/* 改行制御用のユーティリティクラス */
+.pc-only {
+  display: none;
+}
+
+/* PC向けレイアウト設定 (992px以上) */
 @media (min-width: 992px) {
   .logo-main {
     font-size: 1.6rem;
@@ -235,6 +399,43 @@ button, input, select, textarea {
   .logo-sub {
     font-size: 0.85rem;
   }
+  
+  /* PC用メニュー表示 */
+  .pc-nav {
+    display: block;
+    margin: 0 20px;
+  }
+  .pc-nav ul {
+    display: flex;
+    gap: 20px;
+  }
+  .pc-nav a {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-brown-dark);
+    position: relative;
+    padding: 5px 0;
+  }
+  .pc-nav a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-gold);
+    transition: var(--transition-base);
+  }
+  .pc-nav a:hover::after {
+    width: 100%;
+  }
+  
+  /* PCではハンバーガーメニュー・モバイルナビを非表示 */
+  .menu-btn,
+  .mobile-nav {
+    display: none !important;
+  }
+
   .header-phone-box {
     display: flex;
     flex-direction: column;
@@ -264,7 +465,13 @@ button, input, select, textarea {
     border-radius: 30px;
     width: auto;
   }
+  
+  /* PC用の改行を有効化 */
+  .pc-only {
+    display: inline;
+  }
 }
+
 
 /* --------------------------------------------------------------------------
    5. ヒーローセクション

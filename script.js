@@ -158,4 +158,37 @@ document.addEventListener('DOMContentLoaded', () => {
       fadeObserver.observe(el);
     });
   }
+
+  // ==========================================================================
+  // 5. スマホ用ハンバーガーメニューの開閉制御
+  // ==========================================================================
+  const menuBtn = document.querySelector('.menu-btn');
+  const mobileNav = document.querySelector('.mobile-nav');
+
+  if (menuBtn && mobileNav) {
+    const toggleMenu = () => {
+      const isOpen = menuBtn.classList.contains('active');
+      
+      // ボタンとナビゲーションの表示クラスをトグル
+      menuBtn.classList.toggle('active', !isOpen);
+      mobileNav.classList.toggle('active', !isOpen);
+      
+      // アクセシビリティ用の状態属性を更新
+      menuBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+      mobileNav.setAttribute('aria-hidden', !isOpen ? 'false' : 'true');
+    };
+
+    menuBtn.addEventListener('click', toggleMenu);
+
+    // メニューの中のリンクをクリックした際、メニューを自動で閉じる
+    const mobileNavLinks = mobileNav.querySelectorAll('a');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (menuBtn.classList.contains('active')) {
+          toggleMenu();
+        }
+      });
+    });
+  }
 });
+
