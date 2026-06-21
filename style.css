@@ -1,0 +1,1512 @@
+/* ==========================================================================
+   出張買取サービス LP スタイルシート
+   ターゲット：50代〜70代女性（大きな文字、丸みのある優しいデザイン、十分な余白）
+   カラー：白 #FFFFFF、クリーム色 #FFF8E7、落ち着いたゴールド #D6A84F、ブラウン #5A4632
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. デザインシステム & CSS変数定義
+   -------------------------------------------------------------------------- */
+:root {
+  /* 主要な配色 */
+  --color-white: #FFFFFF;
+  --color-cream: #FFF8E7;
+  --color-gold: #D6A84F;
+  --color-gold-hover: #C5983E;
+  --color-brown-dark: #3E2F22; /* 文字色用の濃いブラウン */
+  --color-brown-base: #5A4632; /* 基本のブラウン */
+  --color-brown-light: #EFEAE2; /* 薄いブラウングレー（境界線や背景用） */
+  
+  /* 状態表示カラー */
+  --color-error-border: #D93025;
+  --color-error-bg: #FCE8E6;
+  --color-success-border: #188038;
+  
+  /* フォント設計 */
+  --font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  
+  /* 角丸の定義（柔らかい印象を与えるため大きめに設定） */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  
+  /* トランジション（滑らかなアニメーション用） */
+  --transition-base: all 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. リセット & ベーススタイル
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 18px; /* シニア向けに基本フォントサイズを大きめの18pxに設定 */
+  scroll-behavior: smooth; /* スムーズスクロールを有効化 */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-white);
+  color: var(--color-brown-dark);
+  line-height: 1.8; /* 行間を広げて読みやすさを向上 */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding-bottom: 80px; /* スマホ用下部固定CTAがあるため、被らないように余白を設定 */
+}
+
+/* 画像のレスポンシブ対応 */
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* リンクスタイル */
+a {
+  color: var(--color-brown-base);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+a:hover {
+  color: var(--color-gold-hover);
+}
+
+/* リスト・ボタンリセット */
+ul, ol {
+  list-style: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   3. 共通コンポーネント（ボタン、セクション、見出し）
+   -------------------------------------------------------------------------- */
+.section-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 0; /* セクションの間に十分な余白を設定 */
+}
+
+@media (min-width: 768px) {
+  .section-container {
+    padding: 100px 0; /* PC表示ではさらに余白を広く取り、見やすさを重視 */
+  }
+}
+
+/* セクションタイトル */
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 15px;
+  position: relative;
+  padding-bottom: 15px;
+  color: var(--color-brown-dark);
+}
+
+/* タイトルの下線を柔らかいゴールドで表現 */
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--color-gold);
+  border-radius: var(--radius-sm);
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--color-brown-base);
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+  .section-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 60px;
+  }
+}
+
+/* ボタンの基本デザイン */
+.btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-gold);
+  color: var(--color-white);
+  border: none;
+  font-weight: 700;
+  border-radius: 50px; /* 完全に丸い柔らかいボタン */
+  box-shadow: 0 4px 15px rgba(214, 168, 79, 0.4);
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition-base);
+  width: 100%;
+  max-width: 420px;
+  padding: 15px 30px;
+}
+
+.btn:hover {
+  background-color: var(--color-gold-hover);
+  transform: translateY(-2px); /* 浮き上がるマイクロインタラクション */
+  box-shadow: 0 6px 20px rgba(214, 168, 79, 0.6);
+  color: var(--color-white);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   4. ヘッダー
+   -------------------------------------------------------------------------- */
+.site-header {
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-brown-light);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-logo a {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-main {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  line-height: 1.2;
+}
+
+.logo-sub {
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* 電話番号やボタンのグループ */
+.header-info-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* スマホ表示ではヘッダーの電話番号・ネット査定ボタンを非表示（下部固定CTAがあるため） */
+.header-phone-box,
+.btn-header-cta {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .logo-main {
+    font-size: 1.6rem;
+  }
+  .logo-sub {
+    font-size: 0.85rem;
+  }
+  .header-phone-box {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+  }
+  .phone-label {
+    font-size: 0.75rem;
+    color: var(--color-brown-base);
+  }
+  .phone-number {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-brown-dark);
+  }
+  .phone-number:hover {
+    color: var(--color-gold-hover);
+  }
+  .phone-hours {
+    font-size: 0.7rem;
+    color: var(--color-brown-base);
+  }
+  .btn-header-cta {
+    display: inline-flex;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    box-shadow: none;
+    border-radius: 30px;
+    width: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. ヒーローセクション
+   -------------------------------------------------------------------------- */
+.hero-section {
+  background-color: var(--color-cream);
+  padding: 40px 0;
+  overflow: hidden;
+}
+
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  gap: 30px;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-badge {
+  background-color: var(--color-white);
+  color: var(--color-gold-hover);
+  border: 2px solid var(--color-gold);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 4px 16px;
+  border-radius: 50px;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.hero-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-brown-dark);
+  margin-bottom: 20px;
+}
+
+.hero-title .highlight {
+  color: var(--color-gold-hover);
+  position: relative;
+  display: inline-block;
+}
+
+/* マーカ風のアンダーライン */
+.hero-title .highlight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 8px;
+  background-color: rgba(214, 168, 79, 0.2);
+  z-index: -1;
+}
+
+.hero-lead {
+  font-size: 0.95rem;
+  color: var(--color-brown-base);
+  margin-bottom: 30px;
+  max-width: 580px;
+}
+
+.hero-cta-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-hero-cta {
+  height: auto;
+  padding: 18px 24px;
+}
+
+.btn-main-text {
+  font-size: 1.15rem;
+  display: block;
+}
+
+.btn-sub-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.hero-phone-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phone-cta-desc {
+  font-size: 0.75rem;
+  color: var(--color-brown-base);
+}
+
+.phone-cta-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+}
+
+.hero-image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hero-image {
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px rgba(90, 70, 50, 0.15);
+  border: 4px solid var(--color-white);
+  width: 100%;
+  max-width: 500px;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  .hero-lead {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-section {
+    padding: 80px 0;
+  }
+  .hero-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .hero-content {
+    flex: 1.2;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .hero-title {
+    font-size: 2.5rem;
+    line-height: 1.4;
+  }
+  .hero-lead {
+    font-size: 1.2rem;
+  }
+  .hero-cta-group {
+    align-items: flex-start;
+  }
+  .hero-image-box {
+    flex: 1;
+  }
+  .hero-image {
+    max-width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. お客様のお悩み
+   -------------------------------------------------------------------------- */
+.problems-section {
+  background-color: var(--color-white);
+}
+
+.problems-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+@media (min-width: 576px) {
+  .problems-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.problem-card {
+  background-color: var(--color-cream);
+  padding: 30px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(214, 168, 79, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: var(--transition-base);
+}
+
+.problem-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(90, 70, 50, 0.05);
+}
+
+.problem-number {
+  background-color: var(--color-brown-base);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.problem-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-brown-dark);
+}
+
+.problems-solution-box {
+  background-color: var(--color-white);
+  border: 3px dashed var(--color-gold);
+  border-radius: var(--radius-md);
+  padding: 25px;
+  text-align: center;
+  max-width: 700px;
+  margin: 40px auto 0;
+}
+
+.solution-accent-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+}
+
+@media (min-width: 768px) {
+  .problem-text {
+    font-size: 1.1rem;
+  }
+  .solution-accent-text {
+    font-size: 1.4rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. サービス説明（特徴）
+   -------------------------------------------------------------------------- */
+.services-section {
+  background-color: var(--color-cream);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.service-item {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-base);
+}
+
+.service-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.service-img-wrapper {
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+
+.service-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.service-item:hover .service-img {
+  transform: scale(1.05);
+}
+
+.service-item-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  padding: 20px 20px 10px;
+}
+
+.service-item-desc {
+  font-size: 0.95rem;
+  color: var(--color-brown-base);
+  padding: 0 20px 25px;
+  flex-grow: 1;
+}
+
+@media (min-width: 768px) {
+  .service-item-title {
+    font-size: 1.25rem;
+  }
+  .service-item-desc {
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. 選ばれる理由
+   -------------------------------------------------------------------------- */
+.reasons-section {
+  background-color: var(--color-white);
+}
+
+.reasons-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+}
+
+@media (min-width: 576px) {
+  .reasons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.reason-card {
+  background-color: var(--color-white);
+  border: 1px solid rgba(214, 168, 79, 0.3);
+  padding: 35px 25px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: var(--transition-base);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.reason-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(214, 168, 79, 0.1);
+  border-color: var(--color-gold);
+}
+
+.reason-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  background-color: var(--color-cream);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reason-card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  margin-bottom: 12px;
+}
+
+.reason-card-desc {
+  font-size: 0.95rem;
+  color: var(--color-brown-base);
+}
+
+@media (min-width: 768px) {
+  .reason-card-title {
+    font-size: 1.3rem;
+  }
+  .reason-card-desc {
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. 買取品目一覧
+   -------------------------------------------------------------------------- */
+.items-section {
+  background-color: var(--color-cream);
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+@media (min-width: 576px) {
+  .items-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 992px) {
+  .items-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.item-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: var(--transition-base);
+  border: 1px solid transparent;
+}
+
+.item-card:hover {
+  transform: scale(1.05);
+  border-color: var(--color-gold);
+  box-shadow: 0 4px 12px rgba(214, 168, 79, 0.15);
+}
+
+.item-icon {
+  font-size: 2.2rem;
+}
+
+.item-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   10. 買取事例
+   -------------------------------------------------------------------------- */
+.cases-section {
+  background-color: var(--color-white);
+}
+
+.cases-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 768px) {
+  .cases-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.case-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-brown-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  transition: var(--transition-base);
+}
+
+.case-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-color: var(--color-gold);
+}
+
+.case-img-box {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.case-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.case-card:hover .case-img {
+  transform: scale(1.05);
+}
+
+.case-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.case-tag {
+  background-color: var(--color-cream);
+  color: var(--color-gold-hover);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 2px 10px;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-bottom: 10px;
+}
+
+.case-item-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  margin-bottom: 10px;
+}
+
+.case-desc {
+  font-size: 0.95rem;
+  color: var(--color-brown-base);
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.case-price-box {
+  background-color: var(--color-cream);
+  border-radius: var(--radius-md);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-brown-base);
+}
+
+.price-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-gold-hover);
+}
+
+@media (min-width: 768px) {
+  .case-item-title {
+    font-size: 1.25rem;
+  }
+  .case-desc {
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. ご利用の流れ
+   -------------------------------------------------------------------------- */
+.flow-section {
+  background-color: var(--color-cream);
+}
+
+.flow-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  position: relative;
+}
+
+/* 縦のタイムライン用の線（PC用） */
+@media (min-width: 992px) {
+  .flow-steps {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .flow-steps::before {
+    content: "";
+    position: absolute;
+    top: 35px;
+    left: 10%;
+    right: 10%;
+    height: 4px;
+    background-color: var(--color-gold);
+    z-index: 1;
+    opacity: 0.4;
+  }
+}
+
+.flow-step {
+  background-color: var(--color-white);
+  padding: 40px 20px 30px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(214, 168, 79, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.step-num {
+  background-color: var(--color-gold);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 1.4rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border: 4px solid var(--color-white);
+  box-shadow: 0 2px 8px rgba(214, 168, 79, 0.4);
+}
+
+.step-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  margin-bottom: 12px;
+}
+
+.step-desc {
+  font-size: 0.95rem;
+  color: var(--color-brown-base);
+  line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+   12. よくある質問（FAQ）
+   -------------------------------------------------------------------------- */
+.faq-section {
+  background-color: var(--color-white);
+}
+
+.faq-accordion-group {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* detailsタグの標準外観をリセットして綺麗にスタイリング */
+.faq-item {
+  background-color: var(--color-cream);
+  border: 1px solid rgba(214, 168, 79, 0.2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-base);
+}
+
+/* 開いている状態のスタイル */
+.faq-item[open] {
+  background-color: var(--color-white);
+  border-color: var(--color-gold);
+  box-shadow: 0 4px 15px rgba(90, 70, 50, 0.05);
+}
+
+/* summary部分（質問ヘッダー） */
+.faq-question {
+  display: flex;
+  align-items: center;
+  padding: 20px 25px;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+/* Chromeなどのデフォルト矢印を非表示に */
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+.faq-question {
+  list-style: none; /* 標準の矢印を非表示にする標準的な方法 */
+}
+
+.faq-q-icon {
+  color: var(--color-gold);
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-right: 15px;
+}
+
+.faq-question-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  flex-grow: 1;
+}
+
+.faq-toggle-icon {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-brown-base);
+  transition: transform 0.3s ease;
+}
+
+/* 開閉に応じて記号を回転させる */
+.faq-item[open] .faq-toggle-icon {
+  transform: rotate(45deg);
+}
+
+/* 回答テキストのコンテナ */
+.faq-answer {
+  padding: 0 25px 25px 55px;
+  font-size: 0.95rem;
+  color: var(--color-brown-base);
+  border-top: 1px solid rgba(214, 168, 79, 0.1);
+  animation: slideDown 0.3s ease-out; /* 開くときのアニメーション効果 */
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .faq-question-text {
+    font-size: 1.15rem;
+  }
+  .faq-answer {
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. お問い合わせセクション & フォーム
+   -------------------------------------------------------------------------- */
+.contact-section {
+  background-color: var(--color-cream);
+}
+
+.contact-cta-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* 電話CTAエリア */
+.contact-phone-cta {
+  background-color: var(--color-white);
+  border: 3px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(90, 70, 50, 0.05);
+}
+
+.phone-cta-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-gold-hover);
+  margin-bottom: 5px;
+}
+
+.phone-cta-sub {
+  font-size: 0.8rem;
+  color: var(--color-brown-base);
+  display: block;
+  margin-bottom: 20px;
+}
+
+.phone-cta-btn {
+  display: inline-block;
+  background-color: var(--color-gold);
+  color: var(--color-white);
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 15px 40px;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(214, 168, 79, 0.4);
+  transition: var(--transition-base);
+}
+
+.phone-cta-btn:hover {
+  background-color: var(--color-gold-hover);
+  transform: scale(1.02);
+  color: var(--color-white);
+}
+
+.phone-cta-time {
+  font-size: 0.85rem;
+  color: var(--color-brown-base);
+  margin-top: 15px;
+}
+
+/* メールフォームコンテナ */
+.contact-form-container {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 30px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.form-instructions {
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--color-brown-base);
+  margin-bottom: 30px;
+}
+
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.form-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.required-badge {
+  background-color: #E0533C;
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+/* 入力コントロールの基本設計 */
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="email"],
+.form-group textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid var(--color-brown-light);
+  border-radius: var(--radius-sm);
+  background-color: #FAFAFA;
+  font-size: 1rem;
+  color: var(--color-brown-dark);
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  outline: none;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="email"]:focus,
+.form-group textarea:focus {
+  border-color: var(--color-gold);
+  background-color: var(--color-white);
+}
+
+/* --------------------------------------------------------------------------
+   14. 最新のCSSによるフォームバリデーション（:user-invalid, :user-valid）
+   -------------------------------------------------------------------------- */
+/* 
+   - ユーザーが一度操作（入力・送信試行など）し、かつ要件を満たさない（エラー）場合
+   - 赤いボーダーと薄い赤の背景を表示して注意を引きます
+*/
+.form-group input:user-invalid,
+.form-group textarea:user-invalid {
+  border-color: var(--color-error-border);
+  background-color: var(--color-error-bg);
+}
+
+/* エラーメッセージ（初期状態は非表示） */
+.error-message {
+  display: none;
+  color: var(--color-error-border);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+/* 入力が不正のとき、後続のエラーメッセージを表示 */
+.form-group input:user-invalid ~ .error-message,
+.form-group textarea:user-invalid ~ .error-message {
+  display: block;
+}
+
+/* 入力が正しい場合、緑色の枠線を表示して安心感を付与 */
+.form-group input:user-valid {
+  border-color: var(--color-success-border);
+}
+
+/* --------------------------------------------------------------------------
+   チェックボックス設計（シニア向けにタップしやすく大きく）
+   -------------------------------------------------------------------------- */
+.form-label-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-brown-dark);
+  margin-bottom: 12px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+@media (min-width: 576px) {
+  .checkbox-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* タップターゲットを広く取るためのラッパー */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  position: relative;
+  padding: 10px 5px;
+}
+
+/* デフォルトのチェックボックスを非表示にしてカスタムデザインを適用 */
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* カスタムのチェックボックス枠 */
+.checkbox-custom {
+  height: 26px;
+  width: 26px;
+  background-color: #FAFAFA;
+  border: 2px solid var(--color-brown-light);
+  border-radius: var(--radius-sm);
+  margin-right: 10px;
+  display: inline-block;
+  flex-shrink: 0;
+  position: relative;
+  transition: var(--transition-base);
+}
+
+/* ホバー時にゴールドに変更 */
+.checkbox-label:hover input ~ .checkbox-custom {
+  border-color: var(--color-gold);
+}
+
+/* チェック時の背景変更 */
+.checkbox-label input:checked ~ .checkbox-custom {
+  background-color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+/* チェックマークのデザイン */
+.checkbox-custom::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 8px;
+  top: 4px;
+  width: 6px;
+  height: 12px;
+  border: solid var(--color-white);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* チェックが入ったときにチェックマークを表示 */
+.checkbox-label input:checked ~ .checkbox-custom::after {
+  display: block;
+}
+
+/* 送信ボタンのレイアウト */
+.form-submit-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-submit {
+  font-size: 1.2rem;
+  padding: 18px 40px;
+  max-width: 100%;
+}
+
+/* 送信完了メッセージ（初期非表示） */
+.form-success-box {
+  display: none;
+  background-color: #E8F5E9;
+  border: 2px solid var(--color-success-border);
+  border-radius: var(--radius-lg);
+  padding: 40px 20px;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.success-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.success-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1B5E20;
+  margin-bottom: 10px;
+}
+
+.success-desc {
+  font-size: 1rem;
+  color: #2E7D32;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (min-width: 768px) {
+  .contact-phone-cta {
+    padding: 40px 30px;
+  }
+  .phone-cta-btn {
+    font-size: 2rem;
+  }
+  .contact-form-container {
+    padding: 50px 40px;
+  }
+  .checkbox-label {
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   15. フッター
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--color-brown-dark);
+  color: var(--color-white);
+  padding: 60px 0 20px;
+}
+
+.footer-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 15px;
+}
+
+.footer-company-desc {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.footer-address {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+}
+
+.footer-links ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  color: var(--color-gold);
+  padding-left: 5px; /* ホバー時のマイクロアニメーション */
+}
+
+.footer-copy {
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 40px;
+  padding-top: 20px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (min-width: 768px) {
+  .footer-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .footer-info {
+    flex: 1.5;
+  }
+  .footer-links {
+    flex: 1;
+  }
+  .footer-links ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. スマートフォン用下部固定CTA（コンバージョン誘導）
+   -------------------------------------------------------------------------- */
+.bottom-fixed-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: var(--color-white);
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  z-index: 99;
+}
+
+.fixed-cta-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: var(--transition-base);
+}
+
+.fixed-cta-phone {
+  background-color: #E0533C; /* 電話は温かみのある赤系で強調 */
+  color: var(--color-white);
+}
+
+.fixed-cta-phone:hover {
+  background-color: #C9432D;
+  color: var(--color-white);
+}
+
+.fixed-cta-web {
+  background-color: var(--color-gold);
+  color: var(--color-white);
+}
+
+.fixed-cta-web:hover {
+  background-color: var(--color-gold-hover);
+  color: var(--color-white);
+}
+
+/* PCや大きめのタブレットでは下部固定CTAを非表示に */
+@media (min-width: 992px) {
+  .bottom-fixed-cta {
+    display: none;
+  }
+  body {
+    padding-bottom: 0; /* PC版では余分なパディングをリセット */
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17. スクロールアニメーション効果 (IntersectionObserverと連携)
+   -------------------------------------------------------------------------- */
+.scroll-fade {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-fade.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ユーザーがアニメーションの軽減を希望している場合は無効化 */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-fade {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* CSS Scroll-driven animations に対応しているブラウザへの適用 */
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .scroll-fade {
+      /* JSのIntersectionObserverなしでも、CSSのみでスクロールに連動してアニメーションする */
+      animation: fadeUp linear forwards;
+      animation-timeline: view();
+      animation-range: entry 5% entry 40%;
+    }
+  }
+}
